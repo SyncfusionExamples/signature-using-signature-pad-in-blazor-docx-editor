@@ -25,6 +25,7 @@
 
         <button type="button" class="btn-clear" @onclick="ClearAsync">Clear</button>
         <button type="button" class="btn-insert" disabled="@(!CanInsert)" @onclick="InsertAsync">Insert signature</button>
+        <button type="button" class="btn-export" @onclick="ExportAsync">Export as DOCX</button>
 
     </aside>
 </div>
@@ -60,5 +61,13 @@
         await editor.Editor.InsertImageAsync(dataUrl, 180, 60);
         await editor.Search.SearchResults.ClearAsync();
         await ClearAsync();
+    }
+
+    private async Task ExportAsync()
+    {
+        if (container != null)
+        {
+            await container.DocumentEditor.SaveAsync("SignatureDocument.docx", FormatType.Docx);
+        }
     }
 }

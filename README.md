@@ -9,10 +9,7 @@ This sample demonstrates how to add signatures using the Syncfusion® Blazor DOC
 - Draw signatures using the Signature Pad component
 - Add signer details such as name and title
 - Insert the signature into the document
- 
-## Demo
-
-<!-- TODO: Add workflow screenshot or animated GIF demonstrating the signature adding process. -->
+- Signature will be preserved as image
  
 ## How to Run the Sample
  
@@ -31,7 +28,7 @@ dotnet build
 dotnet run
 ```
  
-### 6. APIs Used
+## APIs Used
  
 | API / Endpoint | HTTP Method | Purpose |
 | --- | --- | --- |
@@ -39,7 +36,7 @@ dotnet run
 | `/api/ContentReview/FindAllAsync` | GET | Finds all occurrence of specified text in the document. |
 | `/api/ContentReview/InsertImageAsync` | POST | Inserts an image at the cursor position in the document. |
  
-### 7. Resources
+## Resources
  
 - **Product page:** [Syncfusion Blazor DOCX Editor](https://www.syncfusion.com/docx-editor-sdk/blazor-docx-editor?utm_source=github&utm_medium=listing&utm_campaign=github-github-documenteditor-examples)
 - **Documentation:** [Syncfusion Blazor DOCX Editor - Documentation](https://help.syncfusion.com/document-processing/word/word-processor/blazor/overview?utm_source=github&utm_medium=listing&utm_campaign=github-github-documenteditor-examples)
