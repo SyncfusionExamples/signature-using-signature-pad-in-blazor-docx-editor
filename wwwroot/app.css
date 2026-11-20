@@ -71,3 +71,19 @@ h1:focus {
 .btn-insert:disabled { background: #c7d0fb; }
 .sign-note { margin-top: 8px; padding: 10px; border: 1px solid #f3dcb0; border-radius: 4px; }
 .sign-note p { margin: 4px 0 0; color: #6b7280; }
+
+/* Width fix: let flex children shrink so the editor + side panel fit the page width */
+html, body { max-width: 100%; overflow-x: hidden; }
+.page { width: 100%; }
+main { flex: 1 1 0; min-width: 0; width: 100%; }
+article.content { min-width: 0; }
+.editor-shell { width: 100%; max-width: 100%; box-sizing: border-box; }
+.editor-pane { flex: 1 1 0; min-width: 0; overflow: hidden; }
+.editor-pane .e-documenteditorcontainer { width: 100% !important; max-width: 100%; }
+.sign-pane { flex: 0 0 380px; max-width: 100%; }
+
+@media (max-width: 1100px) {
+    .editor-shell { flex-direction: column; height: auto; overflow: visible; }
+    .editor-pane { flex: none; width: 100%; height: 80vh; min-height: 480px; }
+    .sign-pane { flex: none; width: 100%; border-left: 0; border-top: 1px solid #d5dbea; overflow-y: visible; }
+}
