@@ -1,0 +1,73 @@
+@page "/"
+@rendermode InteractiveServer
+@using Syncfusion.Blazor.DocumentEditor
+@using Syncfusion.Blazor.Inputs
+
+<div class="editor-shell">
+    <div class="editor-pane">
+        <SfDocumentEditorContainer @ref="container" EnableToolbar="true" Height="100%">
+        <DocumentEditorContainerEvents Created="OnCreated"></DocumentEditorContainerEvents>
+        </SfDocumentEditorContainer>
+    </div>
+    <aside class="sign-pane">
+        <h2>Approval signature</h2>
+
+        <label for="signerName">Signer name</label>
+        <input id="signerName" class="sign-input" placeholder="e.g. Maya Chen" @bind="signerName" @bind:event="oninput" />
+
+        <label for="signerTitle">Signer title</label>
+        <input id="signerTitle" class="sign-input" placeholder="e.g. VP, Legal" @bind="signerTitle" @bind:event="oninput" />
+
+        <label>Draw signature</label>
+        <div class="sign-pad">
+            <SfSignature @ref="signature" Width="320px" Height="170px" BackgroundColor="#ffffff" Changed="OnChanged" />
+        </div>
+
+        <button type="button" class="btn-clear" @onclick="ClearAsync">Clear</button>
+        <button type="button" class="btn-insert" disabled="@(!CanInsert)" @onclick="InsertAsync">Insert signature</button>
+        <button type="button" class="btn-export" @onclick="ExportAsync">Export as DOCX</button>
+
+    </aside>
+</div>
+
+@code {
+    private SfDocumentEditorContainer? container;
+    private SfSignature? signature;
+    private string signerName = "";
+    private string signerTitle = "";
+    private bool hasSignature;
+    private bool CanInsert => hasSignature && !string.IsNullOrWhiteSpace(signerName) && !string.IsNullOrWhiteSpace(signerTitle);
+
+    private async Task OnCreated()
+    {
+        if (container != null) await container.DocumentEditor.OpenAsync(DefaultDocument.Sfdt);
+    }
+
+    private void OnChanged(SignatureChangeEventArgs args) => hasSignature = true;
+
+    private async Task ClearAsync()
+    {
+        if (signature != null) await signature.ClearAsync();
+        hasSignature = false;
+    }
+
+    private async Task InsertAsync()
+    {
+        if (signature == null || container == null) return;
+        var dataUrl = await signature.GetSignatureAsync(SignatureFileType.Png);
+        if (!dataUrl.StartsWith("data:")) dataUrl = "data:image/png;base64," + dataUrl;
+        var editor = container.DocumentEditor;
+        await editor.Search.FindAllAsync(DefaultDocument.Placeholder);
+        await editor.Editor.InsertImageAsync(dataUrl, 180, 60);
+        await editor.Search.SearchResults.ClearAsync();
+        await ClearAsync();
+    }
+
+    private async Task ExportAsync()
+    {
+        if (container != null)
+        {
+            await container.DocumentEditor.SaveAsync("SignatureDocument.docx", FormatType.Docx);
+        }
+    }
+}
